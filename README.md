@@ -7,6 +7,13 @@ Hello, this is my solution to the coding test. This component exposes a REST api
 ### Note
     A cron job was implemented to automatically remove the games having a release date older than 18 months and apply a discount of 20% to all games having a release date between 12 and 18 months.
 
+## Pre-requisites
+
+-   **NodeJS**: v16.15.0 or higher
+-   **MongoDB**: v4.2.1 or higher
+-   **Docker**(https://www.docker.com/get-started)
+
+
 ## How to install
 
 ### Using Git (recommended)
@@ -44,7 +51,7 @@ $ docker-compose up
 
 ## API documentation
 
-With the application running, go to http://localhost:3000/api/ to see the API swagger documentation.
+With the application running, go to http://localhost:3000/docs/ to see the API swagger documentation.
 
 ## Test
 
