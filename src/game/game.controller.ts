@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -13,7 +14,9 @@ import { CreateGameDto } from './dto/create-game.dto';
 import { UpdateGameDto } from './dto/update-game.dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { subMonths } from 'date-fns';
+import { Messages } from './common/util';
 import { calculateDiscount, CONSTANTS } from './common/util';
+import { Types, Model } from 'mongoose';
 import { IGame } from './interfaces/game.interface';
 import { IPublisher } from './interfaces/publisher.interface';
 
@@ -32,16 +35,24 @@ export class GameController {
   @Get('/:id')
   @ApiOkResponse({ description: 'The game was returned successfully' })
   @ApiBadRequestResponse({ description: 'Game not found' })
-  getGame(@Param('id') id: string): Promise<IGame> {
-    return  this.gameService.findOne(id);
+  async getGame(@Param('id') id: string): Promise<IGame> {
+    if(!Types.ObjectId.isValid(id))
+      throw new BadRequestException(Messages.errorInvalidId);
+    const game =  await this.gameService.findOne(id);
+    if(!game)
+      throw new BadRequestException(Messages.errorGameNotFound);
+    return game;
   }
 
-  @Get('/:id')
+  @Get('/:id/publisher')
   @ApiOkResponse({ description: 'The publiser was returned successfully' })
   @ApiBadRequestResponse({ description: 'Game not found' })
-  @Get('/:id/publisher')
   async getPublisherOfGame(@Param('id') id: string): Promise<IPublisher>  {
-    const game = await this.gameService.findOne(id);
+    if(!Types.ObjectId.isValid(id))
+      throw new BadRequestException(Messages.errorInvalidId);
+    const game =  await this.gameService.findOne(id);
+    if(!game)
+      throw new BadRequestException(Messages.errorGameNotFound);
     const { publisher } = game;
     return publisher;
   }

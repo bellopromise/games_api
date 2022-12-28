@@ -46,8 +46,8 @@ export class CreateGameDto {
   @IsNotEmpty()
   tags: string[];
 
-  @ApiProperty({example: '628021800000',
-  description: 'DateTime in  string',
+  @ApiProperty({example: '2021-07-11',
+  description: 'RelDate in  string',
   required: true,
   type: Date})
   @IsDateString()

@@ -1,4 +1,4 @@
-import {  BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {  BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { Messages } from './common/util';
@@ -15,15 +15,8 @@ export class GameService {
     return this.gameModel.find().exec();
   }
 
-   findOne(id: string) {
-    if(!Types.ObjectId.isValid(id))
-      throw new BadRequestException(Messages.errorInvalidId);
-    const game =   this.gameModel.findById(id).exec();
-    if(!game)
-      throw new BadRequestException(Messages.errorGameNotFound);
-
-    return game;
-    
+  async findOne(id: string) {
+   return await this.gameModel.findById(id).exec();
   } 
 
   async findByReleaseDateLowerThan(date: Date) {
@@ -49,7 +42,7 @@ export class GameService {
       const game  = await this.gameModel.findById(id);
       if(!game)
         throw new BadRequestException(Messages.errorGameNotFound);
-      return this.gameModel.findByIdAndUpdate(id, updateGameDto, {new: true}).exec();
+      return await this.gameModel.findByIdAndUpdate(id, updateGameDto, {new: true}).exec();
     }
     catch(error)
     {
