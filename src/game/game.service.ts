@@ -36,18 +36,13 @@ export class GameService {
   }
 
   async update(id: string, updateGameDto: UpdateGameDto)  {
-    try{
-      if(!Types.ObjectId.isValid(id))
-        throw new BadRequestException(Messages.errorInvalidId);
-      const game  = await this.gameModel.findById(id);
-      if(!game)
-        throw new BadRequestException(Messages.errorGameNotFound);
-      return await this.gameModel.findByIdAndUpdate(id, updateGameDto, {new: true}).exec();
-    }
-    catch(error)
-    {
-      throw new BadRequestException(Messages.errorUpdateGame)
-    }
+    if(!Types.ObjectId.isValid(id))
+      throw new BadRequestException(Messages.errorInvalidId);
+    const game  = await this.gameModel.findById(id);
+    if(!game)
+      throw new BadRequestException(Messages.errorGameNotFound);
+    return await this.gameModel.findByIdAndUpdate(id, updateGameDto, {new: true}).exec();
+    
   }
 
   async remove(id: string) {
@@ -70,7 +65,7 @@ export class GameService {
     try{
       const gamesExists  = await this.gameModel.exists({ _id: [ids] });
         if(!gamesExists)
-          throw new BadRequestException(Messages.errorGamesNotFound+"removes");
+          throw new BadRequestException(Messages.errorGamesNotFound);
         return this.gameModel.deleteMany({ id: [ids] });
    }
     catch(error)

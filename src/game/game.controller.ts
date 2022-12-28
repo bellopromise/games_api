@@ -78,8 +78,7 @@ export class GameController {
   @ApiOkResponse({ description: 'The game was deleted successfully' })
   @ApiBadRequestResponse({ description: 'Game not found' })
   async removeGame(@Param('id') id: string) {
-    await  this.gameService.remove(id);
-    return "Game successfully removed."
+    return await  this.gameService.remove(id);
   }
 
   
