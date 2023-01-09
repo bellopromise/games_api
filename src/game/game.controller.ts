@@ -34,7 +34,7 @@ export class GameController {
 
   @Get('/:id')
   @ApiOkResponse({ description: 'The game was returned successfully' })
-  @ApiBadRequestResponse({ description: 'Game not found' })
+  @ApiNotFoundResponse({ description: 'Game not found' })
   async getGame(@Param('id') id: string): Promise<IGame> {
     if(!Types.ObjectId.isValid(id))
       throw new BadRequestException(Messages.errorInvalidId);
@@ -46,7 +46,7 @@ export class GameController {
 
   @Get('/:id/publisher')
   @ApiOkResponse({ description: 'The publiser was returned successfully' })
-  @ApiBadRequestResponse({ description: 'Game not found' })
+  @ApiNotFoundResponse({ description: 'Game not found' })
   async getPublisherOfGame(@Param('id') id: string): Promise<IPublisher>  {
     if(!Types.ObjectId.isValid(id))
       throw new BadRequestException(Messages.errorInvalidId);
@@ -67,7 +67,7 @@ export class GameController {
 
   @Patch('/:id')
   @ApiOkResponse({ description: 'The game was updated successfully' })
-  @ApiBadRequestResponse({ description: 'Game not found' })
+  @ApiNotFoundResponse({ description: 'Game not found' })
   @ApiUnprocessableEntityResponse({ description: 'Bad Request' })
   @ApiBody({type: UpdateGameDto})
   updateGame(@Param('id') id: string, @Body() updateGameDto: UpdateGameDto): Promise<IGame> {
@@ -76,7 +76,7 @@ export class GameController {
   
   @Delete('/:id')
   @ApiOkResponse({ description: 'The game was deleted successfully' })
-  @ApiBadRequestResponse({ description: 'Game not found' })
+  @ApiNotFoundResponse({ description: 'Game not found' })
   async removeGame(@Param('id') id: string) {
     return await  this.gameService.remove(id);
   }
